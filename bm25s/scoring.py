@@ -143,6 +143,15 @@ def _score_tfc_bm25plus(tf_array, l_d, l_avg, k1, b, delta):
     return (num / den) + delta
 
 
+def _score_tfc_vanilla_tf(tf_array, l_d, l_avg, k1, b, delta=None):
+    """
+    Computes the term frequency component of the TF-IDF score using the vanilla variant
+    """
+    # idf component is given by the idf_array
+    # we calculate the term-frequency component (tfc)
+    return tf_array
+
+
 def _select_tfc_scorer(method) -> callable:
     if method == "robertson":
         return _score_tfc_robertson
@@ -154,6 +163,8 @@ def _select_tfc_scorer(method) -> callable:
         return _score_tfc_bm25l
     elif method == "bm25+":
         return _score_tfc_bm25plus
+    elif method == "vanilla_tfidf":
+        return _score_tfc_vanilla_tf
     else:
         error_msg = f"Invalid score_tfc value: {method}. Choose from 'robertson', 'lucene', 'atire'."
         raise ValueError(error_msg)
@@ -214,6 +225,8 @@ def _select_idf_scorer(method) -> callable:
         return _score_idf_bm25l
     elif method == "bm25+":
         return _score_idf_bm25plus
+    elif method == "vanilla_tfidf":
+        return _score_idf_atire
     else:
         error_msg = f"Invalid score_idf_inner value: {method}. Choose from 'robertson', 'lucene', 'atire', 'bm25l', 'bm25+'."
         raise ValueError(error_msg)
